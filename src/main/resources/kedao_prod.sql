@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : kedao
 Source Server Version : 50718
 Source Host           : cd-cdb-lx77e2kk.sql.tencentcdb.com:63130
-Source Database       : kedao_prod
+Source Database       : kedao_test
 
 Target Server Type    : MYSQL
 Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2019-06-13 21:08:59
+Date: 2019-06-13 20:45:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,7 +28,7 @@ CREATE TABLE `c_account_share_show` (
   KEY `share_taId` (`c_taId`),
   CONSTRAINT `share_taId` FOREIGN KEY (`c_taId`) REFERENCES `c_table_account_info` (`c_taid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `share_wxId` FOREIGN KEY (`s_wxId`) REFERENCES `s_wxinfo` (`s_wxid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=228 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for c_bargain_record_info
@@ -46,7 +46,7 @@ CREATE TABLE `c_bargain_record_info` (
   PRIMARY KEY (`c_bargainRecordId`),
   KEY `barginId` (`c_bargainId`),
   CONSTRAINT `barginId` FOREIGN KEY (`c_bargainId`) REFERENCES `c_bargin_info` (`c_barginId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=295 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=403 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for c_bargin_info
@@ -72,7 +72,7 @@ CREATE TABLE `c_bargin_info` (
   KEY `bargin_wxId` (`c_wxId`),
   CONSTRAINT `bargin_wxId` FOREIGN KEY (`c_wxId`) REFERENCES `s_wxinfo` (`s_wxid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `taId` FOREIGN KEY (`c_taId`) REFERENCES `c_table_account_info` (`c_taid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=194 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for c_coupon_info
@@ -194,7 +194,7 @@ CREATE TABLE `c_table_account_info` (
   CONSTRAINT `c_table_account_info_ibfk_2` FOREIGN KEY (`r_id`) REFERENCES `r_restaurant_info` (`r_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tableId` FOREIGN KEY (`r_tableInfoId`) REFERENCES `r_table_info` (`r_tableinfoid`) ON DELETE SET NULL ON UPDATE SET NULL,
   CONSTRAINT `weixinId` FOREIGN KEY (`c_wxId`) REFERENCES `s_wxinfo` (`s_wxid`) ON DELETE SET NULL ON UPDATE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=497 DEFAULT CHARSET=utf8 COMMENT='桌子点菜 桌子账单的相关信息';
+) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=utf8 COMMENT='桌子点菜 桌子账单的相关信息';
 
 -- ----------------------------
 -- Table structure for c_table_food_info
@@ -253,7 +253,7 @@ CREATE TABLE `r_bargain_tactics` (
   PRIMARY KEY (`r_bargainTacticsID`),
   KEY `tartics_strategy` (`r_marketingStrategyID`),
   CONSTRAINT `tartics_strategy` FOREIGN KEY (`r_marketingStrategyID`) REFERENCES `r_marketing_strategy` (`r_marketingstrategyid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='砍价策略\r\n';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='砍价策略\r\n';
 
 -- ----------------------------
 -- Table structure for r_bargain_template
@@ -327,7 +327,7 @@ CREATE TABLE `r_coupon_record` (
   CONSTRAINT `r_coupon_record_ibfk_4` FOREIGN KEY (`c_bargainRecordId`) REFERENCES `c_bargain_record_info` (`c_bargainRecordId`) ON DELETE SET NULL ON UPDATE SET NULL,
   CONSTRAINT `r_coupon_record_ibfk_5` FOREIGN KEY (`c_wxId`) REFERENCES `s_wxinfo` (`s_wxid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `r_coupon_record_ibfk_6` FOREIGN KEY (`c_fromTaId`) REFERENCES `c_table_account_info` (`c_taId`) ON DELETE SET NULL ON UPDATE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=368 DEFAULT CHARSET=utf8 COMMENT='优惠券记录';
+) ENGINE=InnoDB AUTO_INCREMENT=454 DEFAULT CHARSET=utf8 COMMENT='优惠券记录';
 
 -- ----------------------------
 -- Table structure for r_coupon_tactics
@@ -352,7 +352,7 @@ CREATE TABLE `r_coupon_tactics` (
   PRIMARY KEY (`r_couponID`),
   KEY `R_MarketStrategyId` (`r_marketStrategyId`),
   CONSTRAINT `r_coupon_tactics_ibfk_1` FOREIGN KEY (`r_marketStrategyId`) REFERENCES `r_marketing_strategy` (`r_marketingstrategyid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='商家优惠券';
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COMMENT='商家优惠券';
 
 -- ----------------------------
 -- Table structure for r_coupon_use_menu
@@ -405,7 +405,7 @@ CREATE TABLE `r_group` (
 -- ----------------------------
 DROP TABLE IF EXISTS `r_group_res`;
 CREATE TABLE `r_group_res` (
-  `r_groupResId` bigint(20) NOT NULL,
+  `r_groupResId` int(11) NOT NULL AUTO_INCREMENT,
   `r_groupId` bigint(32) DEFAULT NULL,
   `r_id` bigint(32) DEFAULT NULL,
   `r_status` int(1) DEFAULT '0' COMMENT '0 未审核；1审核通过',
@@ -430,7 +430,7 @@ CREATE TABLE `r_marketing_strategy` (
   PRIMARY KEY (`r_marketingStrategyID`),
   KEY `restaurant_stragtegy` (`r_id`),
   CONSTRAINT `restaurant_stragtegy` FOREIGN KEY (`r_id`) REFERENCES `r_restaurant_info` (`r_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COMMENT='商家营销策略标注';
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8 COMMENT='商家营销策略标注';
 
 -- ----------------------------
 -- Table structure for r_operate_type
@@ -454,7 +454,7 @@ CREATE TABLE `r_operate_type` (
   `r_freeLeastNumber` int(11) DEFAULT NULL COMMENT '免单最低砍价人数默认值',
   `r_freeNumPerDay` int(11) DEFAULT NULL COMMENT '每天免单数量默认值',
   PRIMARY KEY (`r_operateTypeID`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for r_operator_restaurant
@@ -499,7 +499,7 @@ CREATE TABLE `r_pay_fee_type` (
   `r_payFeeName` varchar(32) NOT NULL,
   `r_payFeeNote` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`r_payFeeTypeID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for r_publicity
@@ -533,7 +533,7 @@ CREATE TABLE `r_qr_code` (
   `r_qrDownload` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`r_qrCodeId`),
   UNIQUE KEY `qrUnique` (`r_qrCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=3576 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2148 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for r_red_packet_info
@@ -576,7 +576,7 @@ CREATE TABLE `r_red_packet_tactics` (
   PRIMARY KEY (`r_redPacketID`),
   KEY `r_red_packet_tactics_ibfk_1` (`r_marketingStrategyID`),
   CONSTRAINT `r_red_packet_tactics_ibfk_1` FOREIGN KEY (`r_marketingStrategyID`) REFERENCES `r_marketing_strategy` (`r_marketingStrategyID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='分享红包';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='分享红包';
 
 -- ----------------------------
 -- Table structure for r_res_dev
@@ -590,7 +590,7 @@ CREATE TABLE `r_res_dev` (
   PRIMARY KEY (`r_devId`),
   KEY `dev_id` (`r_id`),
   CONSTRAINT `dev_id` FOREIGN KEY (`r_id`) REFERENCES `r_restaurant_info` (`r_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for r_restaurant_info
@@ -649,7 +649,7 @@ CREATE TABLE `r_restaurant_info` (
   KEY `R_OperateTypeID` (`r_operateTypes`),
   KEY `r_restaurant_info_ibfk_2` (`r_principalID`),
   KEY `r_no` (`r_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for r_restaurantPay
@@ -708,7 +708,7 @@ CREATE TABLE `r_system_user_info` (
   KEY `adcode` (`s_adCode`),
   KEY `adcode_1` (`s_realAdCode`),
   CONSTRAINT `adcode_1` FOREIGN KEY (`s_realAdCode`) REFERENCES `s_area` (`s_adcode`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='系统用户信息\r\n';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='系统用户信息\r\n';
 
 -- ----------------------------
 -- Table structure for r_table_info
@@ -724,7 +724,7 @@ CREATE TABLE `r_table_info` (
   KEY `rId` (`r_id`),
   CONSTRAINT `qrCodeId` FOREIGN KEY (`r_qrCodeId`) REFERENCES `r_qr_code` (`r_qrCodeId`) ON DELETE SET NULL ON UPDATE SET NULL,
   CONSTRAINT `rId` FOREIGN KEY (`r_id`) REFERENCES `r_restaurant_info` (`r_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=189 DEFAULT CHARSET=utf8 COMMENT='桌子的相关信息';
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8 COMMENT='桌子的相关信息';
 
 -- ----------------------------
 -- Table structure for r_user_info
@@ -743,7 +743,7 @@ CREATE TABLE `r_user_info` (
   `r_userType` int(1) NOT NULL DEFAULT '0' COMMENT '0 商家 ，1 集团 , 2 操作员',
   `r_organizateName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`r_userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8 COMMENT='商家用户的相关信息\r\n';
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COMMENT='商家用户的相关信息\r\n';
 
 -- ----------------------------
 -- Table structure for r_waitor
@@ -753,14 +753,14 @@ CREATE TABLE `r_waitor` (
   `r_waitorID` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '服务员ID',
   `r_id` bigint(32) DEFAULT NULL COMMENT '餐饮店编号',
   `r_waitorType` varchar(64) DEFAULT NULL COMMENT '服务员类型',
-  `s_waitorName` varchar(64) DEFAULT NULL COMMENT '服务员名字',
-  `s_waitorTel` varchar(64) DEFAULT NULL COMMENT '服务员电话',
-  `s_waitorNo` varchar(32) DEFAULT NULL COMMENT '服务员编号',
+  `r_waitorName` varchar(64) DEFAULT NULL COMMENT '服务员名字',
+  `r_waitorTel` varchar(64) DEFAULT NULL COMMENT '服务员电话',
+  `r_waitorNo` varchar(32) DEFAULT NULL COMMENT '服务员编号',
   `r_waitorSex` int(11) DEFAULT NULL,
   `r_wxOpenId` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`r_waitorID`),
   CONSTRAINT `r_waitor_ibfk_2` FOREIGN KEY (`r_waitorID`) REFERENCES `r_restaurant_info` (`r_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='服务员信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='服务员信息表';
 
 -- ----------------------------
 -- Table structure for s_agent
@@ -788,7 +788,7 @@ CREATE TABLE `s_agentPay` (
   `s_agentId` bigint(32) DEFAULT NULL,
   `s_systemUserID` bigint(30) DEFAULT NULL,
   `s_agentPayType` varchar(50) DEFAULT NULL COMMENT '支付时长选择',
-  `r_payFeeTypeId` bigint(32) DEFAULT NULL COMMENT '支付方式',
+  `r_payFeeTypeID` bigint(32) DEFAULT NULL COMMENT '支付方式',
   `s_agentPayAmount` decimal(10,0) DEFAULT NULL COMMENT '付款金额',
   `s_agentPayTime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '付款时间',
   `s_agentPayStartTime` datetime DEFAULT NULL COMMENT '付款开始时间',
@@ -916,9 +916,9 @@ DROP TABLE IF EXISTS `s_pay_success_log`;
 CREATE TABLE `s_pay_success_log` (
   `r_success_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `s_wxId` bigint(20) DEFAULT NULL,
-  `r_totalAmount` decimal(20,2) DEFAULT NULL,
-  `r_disAmount` decimal(10,2) DEFAULT NULL,
-  `r_acAmount` decimal(10,2) DEFAULT NULL,
+  `r_totalAmount` decimal(20,0) DEFAULT NULL,
+  `r_disAmount` decimal(10,0) DEFAULT NULL,
+  `r_acAmount` decimal(10,0) DEFAULT NULL,
   `r_payTime` varchar(255) DEFAULT NULL,
   `r_resName` varchar(255) DEFAULT NULL,
   `r_billNo` varchar(255) DEFAULT NULL,
@@ -942,7 +942,7 @@ CREATE TABLE `s_permission` (
   `s_menuIco` varchar(255) DEFAULT NULL COMMENT '目录图标',
   `s_type` int(1) NOT NULL DEFAULT '1' COMMENT '1系统用户 0商家用户',
   PRIMARY KEY (`s_permissionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=175 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for s_permission_role
@@ -954,7 +954,7 @@ CREATE TABLE `s_permission_role` (
   PRIMARY KEY (`s_permissionId`,`s_roleId`),
   KEY `ss_roles` (`s_roleId`),
   CONSTRAINT `s_permissionId` FOREIGN KEY (`s_permissionId`) REFERENCES `s_permission` (`s_permissionId`),
-  CONSTRAINT `ss_roles` FOREIGN KEY (`s_roleId`) REFERENCES `s_role` (`s_roleId`)
+  CONSTRAINT `ss_roles` FOREIGN KEY (`s_roleId`) REFERENCES `s_role` (`s_roleid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -975,7 +975,7 @@ CREATE TABLE `s_platform_bonus` (
   PRIMARY KEY (`s_bonusID`),
   KEY `r_id` (`r_id`),
   CONSTRAINT `s_platform_bonus_ibfk_1` FOREIGN KEY (`r_id`) REFERENCES `r_restaurant_info` (`r_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='平台提成费用';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='平台提成费用';
 
 -- ----------------------------
 -- Table structure for s_restaurant_platform_bonus
@@ -992,8 +992,8 @@ CREATE TABLE `s_restaurant_platform_bonus` (
   `s_discount_endDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '优惠到期日',
   PRIMARY KEY (`s_restaurant_bonus_id`),
   KEY `r_bonus` (`r_id`),
-  CONSTRAINT `r_bonus` FOREIGN KEY (`r_id`) REFERENCES `r_restaurant_info` (`r_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+  CONSTRAINT `s_restaurant_platform_bonus_ibfk_1` FOREIGN KEY (`r_id`) REFERENCES `r_restaurant_info` (`r_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for s_role
@@ -1005,7 +1005,7 @@ CREATE TABLE `s_role` (
   `s_name` varchar(32) NOT NULL,
   `s_description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`s_roleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for s_ruser_role
@@ -1036,7 +1036,7 @@ CREATE TABLE `s_sales` (
   `s_saleParentID` int(11) DEFAULT NULL COMMENT '销售人员上一级ID',
   `s_sex` int(11) DEFAULT NULL,
   `s_state` int(11) DEFAULT NULL,
-  `s_systemUserID` bigint(32) DEFAULT NULL COMMENT '销售人员对应的系统人员ID',
+  `s_systemUserID` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`s_saleID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1060,7 +1060,7 @@ CREATE TABLE `s_service` (
   PRIMARY KEY (`s_docId`),
   KEY `r_id` (`r_id`) USING BTREE,
   CONSTRAINT `service_restaurant` FOREIGN KEY (`r_id`) REFERENCES `r_restaurant_info` (`r_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for s_service_handle
@@ -1076,7 +1076,7 @@ CREATE TABLE `s_service_handle` (
   PRIMARY KEY (`s_serviceHandleId`),
   KEY `handle_service` (`s_docId`),
   CONSTRAINT `handle_service` FOREIGN KEY (`s_docId`) REFERENCES `s_service` (`s_docId`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for s_strategy
@@ -1089,7 +1089,7 @@ CREATE TABLE `s_strategy` (
   `s_strategyDes` varchar(255) DEFAULT NULL COMMENT '策略描述',
   `s_strategyStatus` int(10) DEFAULT '1' COMMENT '策略状态',
   PRIMARY KEY (`s_strategyId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for s_suser_role
@@ -1140,7 +1140,7 @@ CREATE TABLE `s_wxinfo` (
   `s_username` varchar(32) DEFAULT NULL COMMENT '微信昵称',
   `s_picturePath` varchar(255) DEFAULT NULL COMMENT '微信头像',
   PRIMARY KEY (`s_wxId`)
-) ENGINE=InnoDB AUTO_INCREMENT=842 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=utf8;
 DROP TRIGGER IF EXISTS `reset_qrCode`;
 DELIMITER ;;
 CREATE TRIGGER `reset_qrCode` AFTER DELETE ON `r_table_info` FOR EACH ROW update r_qr_code set r_qrFlag=0,r_name=null where r_qrCodeId = old.r_qrCodeId
